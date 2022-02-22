@@ -1,0 +1,20 @@
+version: '3.4'
+services:
+  corporation-service:
+    container_name: corporation-service
+    build:
+      dockerfile: Dockerfile
+    environment:
+      - PORT = 3000
+      - DB_HOST = localhost
+      - DB_PORT = 1401
+      - DB_USERNAME = sa
+      - DB_PASSWORD = kien@04052000
+      - DB_NAME = Corporation_Service_Db
+    ports:
+      - '3000:3000'
+    expose:
+      - 4000
+    restart: unless-stopped
+    mem_limit: 128m
+    cpus: 0.2
