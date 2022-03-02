@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DatabaseModule } from '../../../database/database.module';
 import { CorporationService } from './corporation.service';
 
-describe('BasketService', () => {
+describe('CorporationService', () => {
   let service: CorporationService;
 
   beforeEach(async () => {

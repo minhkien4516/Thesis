@@ -1,0 +1,1 @@
+export const GET_CORPORATION = 'GET_CORPORATION';

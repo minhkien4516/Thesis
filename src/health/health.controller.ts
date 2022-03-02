@@ -5,7 +5,7 @@ import {
   HealthCheckService,
   SequelizeHealthIndicator,
 } from '@nestjs/terminus';
-import { timeDefault } from '../constants/timeout.constant';
+import { defaultTimeout } from '../constants/timeout.constant';
 
 @Controller('health')
 export class HealthController {
@@ -19,7 +19,7 @@ export class HealthController {
   @ApiTags('Health')
   check() {
     return this.healthService.check([
-      async () => this.db.pingCheck('database', { timeout: timeDefault }),
+      async () => this.db.pingCheck('database', { timeout: defaultTimeout }),
     ]);
   }
 }

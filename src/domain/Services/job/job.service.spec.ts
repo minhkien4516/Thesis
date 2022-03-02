@@ -1,26 +1,25 @@
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import databaseConfig from '../../../database/database.config';
 import { DatabaseModule } from '../../../database/database.module';
-import { CorporationController } from './corporation.controller';
-import { CorporationService } from './corporation.service';
+import { JobService } from './Job.service';
 
-describe('CorporationController', () => {
-  let controller: CorporationController;
-  let service: CorporationService;
+describe('JobService', () => {
+  let service: JobService;
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [CorporationController],
-      providers: [CorporationService],
+      providers: [JobService],
       imports: [
         ConfigModule.forRoot({
           envFilePath: ['.env.development', '.env.production', '.env'],
           isGlobal: true,
+          load: [databaseConfig],
         }),
         DatabaseModule,
       ],
     }).compile();
 
-    controller = module.get<CorporationController>(CorporationController);
-    service = module.get<CorporationService>(CorporationService);
+    service = module.get<JobService>(JobService);
   });
 });
