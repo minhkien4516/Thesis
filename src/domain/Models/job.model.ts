@@ -1,10 +1,10 @@
-import { Model, Table } from 'sequelize-typescript';
+import { Model } from 'sequelize-typescript';
 
 export class Job extends Model {
   id: string;
   title: string;
   description: string;
-  date: string;
+  dateReleased: string;
   numberCandidate: number;
   isActive: boolean;
   isRegistered: boolean;

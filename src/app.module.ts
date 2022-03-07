@@ -6,6 +6,7 @@ import { CorporationModule } from './domain/Services/corporation/corporation.mod
 import { HealthModule } from './health/health.module';
 import { ExceptionsLoggerFilter } from './utils/exceptionsLogger.filter';
 import databaseConfig from './database/database.config';
+import { JobModule } from './domain/Services/job/job.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import databaseConfig from './database/database.config';
     DatabaseModule,
     HealthModule,
     CorporationModule,
+    JobModule,
   ],
   providers: [
     {
