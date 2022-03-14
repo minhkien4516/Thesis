@@ -4,7 +4,7 @@ export class Job extends Model {
   id: string;
   title: string;
   description: string;
-  dateReleased: string;
+  dateCreated: string;
   numberCandidate: number;
   isActive: boolean;
   isRegistered: boolean;

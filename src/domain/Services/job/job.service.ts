@@ -4,6 +4,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { Job } from '../../Models/job.model';
 import { DatabaseError, QueryTypes } from 'sequelize';
 import { UpdateJobDto } from './dtos/updateJob.dto';
+import { AddCorporationJobDto } from './dtos/addCorporationJob.dto';
 
 @Injectable()
 export class JobService {
@@ -15,7 +16,7 @@ export class JobService {
     try {
       const inserted = await this.sequelize.query(
         'SP_AddNewJob @title=:title, @description=:description,' +
-          '@dateReleased=:dateReleased, @numberCandidate=:numberCandidate',
+          '@dateCreated=:dateCreated, @numberCandidate=:numberCandidate',
         {
           type: QueryTypes.SELECT,
           replacements: {
@@ -26,6 +27,29 @@ export class JobService {
           model: Job,
         },
       );
+      console.log(inserted);
+      return inserted[0];
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new DatabaseError(error);
+    }
+  }
+
+  public async addCorporationJob(
+    addCorporationJobDto: AddCorporationJobDto,
+  ): Promise<any> {
+    try {
+      const inserted = await this.sequelize.query(
+        'SP_AddCorporationJob @jobId=:jobId, @corporationId=:corporationId',
+        {
+          type: QueryTypes.SELECT,
+          replacements: {
+            ...addCorporationJobDto,
+          },
+          raw: true,
+        },
+      );
+      console.log(inserted);
       return inserted[0];
     } catch (error) {
       this.logger.error(error.message);
@@ -51,14 +75,19 @@ export class JobService {
     }
   }
 
-  public async getAllJob(limit?: number, offset?: number) {
+  public async getAllJob(
+    corporationId: string,
+    limit?: number,
+    offset?: number,
+  ) {
     try {
       if (limit < 1 || offset < 0) return [];
       const totalJob = await this.sequelize.query(
-        'SP_GetAllJob @limit=:limit,@offset=:offset',
+        'SP_GetAllJob @corporationId=:corporationId,@limit=:limit,@offset=:offset',
         {
           type: QueryTypes.SELECT,
           replacements: {
+            corporationId,
             limit,
             offset,
           },
@@ -90,7 +119,7 @@ export class JobService {
     try {
       const updated = await this.sequelize.query(
         'SP_UpdateJob @id=:id,@title=:title, @description=:description,' +
-          '@dateReleased=:dateReleased, @numberCandidate=:numberCandidate',
+          '@dateCreated=:dateCreated, @numberCandidate=:numberCandidate',
         {
           type: QueryTypes.UPDATE,
           replacements: {

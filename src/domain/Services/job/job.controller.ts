@@ -25,11 +25,18 @@ export class JobController {
   ) {}
 
   @Post()
-  async addNewJob(@Body() addNewJobsDto: AddNewJobsDto) {
+  async addNewJob(
+    @Query('corporationId') corporationId: string,
+    @Body() addNewJobsDto: AddNewJobsDto,
+  ) {
     try {
       const multiJob = await Promise.all(
         addNewJobsDto.jobs.map(async (item) => {
           const job = await this.jobService.addNewJob(item);
+          await this.jobService.addCorporationJob({
+            jobId: job.id,
+            corporationId,
+          });
           return job;
         }),
       );
@@ -53,7 +60,9 @@ export class JobController {
           `Corporation does not have that id. Please try again ...`,
           HttpStatus.BAD_REQUEST,
         );
-      return job;
+      return {
+        job: job[0],
+      };
     } catch (error) {
       this.logger.error(error.message);
       throw new HttpException(
@@ -65,11 +74,16 @@ export class JobController {
 
   @Get('all')
   public async GetAllJob(
+    @Query('corporationId') corporationId: string,
     @Query('limit') limit: number,
     @Query('offset') offset: number,
   ) {
     try {
-      const data = await this.jobService.getAllJob(limit, offset);
+      const data = await this.jobService.getAllJob(
+        corporationId,
+        limit,
+        offset,
+      );
       const total = await this.jobService.getTotalJobsForClient();
       console.log(data.length);
       console.log(Object.values(total)[0]);

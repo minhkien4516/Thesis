@@ -3,20 +3,20 @@ import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
 export class AddNewJobDto {
   @IsString()
   @IsNotEmpty()
-  title!: string;
+  title?: string;
 
   @IsString()
   @IsNotEmpty()
-  description!: string;
+  description?: string;
 
   @IsString()
   @IsNotEmpty()
-  dateReleased!: string;
+  dateCreated?: string;
 
   @IsNumber()
   @IsNotEmpty()
   @IsPositive()
-  numberCandidate!: number;
+  numberCandidate?: number;
 }
 
 export class AddNewJobsDto {

@@ -1,4 +1,4 @@
-import { Model, Table } from 'sequelize-typescript';
+import { Model } from 'sequelize-typescript';
 
 export class Skill extends Model {
   id: string;
