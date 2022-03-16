@@ -84,7 +84,7 @@ export class CorporationController {
       const { files } = await this.getImages(Object.values(corporation)[0].id);
       Object.values(corporation)[0].images = files;
 
-      return corporation;
+      return { corporation: corporation[0] };
     } catch (error) {
       this.logger.error(error.message);
       throw new HttpException(

@@ -2,6 +2,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   MinLength,
 } from 'class-validator';
@@ -9,40 +10,52 @@ import {
 export class AddNewCorporationDto {
   @IsString()
   @IsNotEmpty()
-  name!: string;
+  @IsOptional()
+  name: string;
 
   @IsNumber()
+  @IsOptional()
   @MinLength(7)
   @IsNotEmpty()
-  hotline!: number;
+  hotline: number;
 
+  @IsOptional()
   @IsEmail()
   @IsNotEmpty()
-  email!: string;
+  email: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  presenterId: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  overtimeRequire: string;
 
   @IsString()
   @IsNotEmpty()
-  presenterId?: string;
+  @IsOptional()
+  special: string;
 
-  @IsString()
-  overtimeRequire!: string;
-
-  @IsString()
-  special!: string;
-
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  startWorkTime!: string;
+  startWorkTime: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  endWorkTime!: string;
+  endWorkTime: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  origin!: string;
+  origin: string;
 
+  @IsOptional()
   @IsNumber()
   @IsNotEmpty()
-  numberEmployees!: number;
+  numberEmployees: number;
 }
