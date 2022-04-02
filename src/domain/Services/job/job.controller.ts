@@ -5,6 +5,7 @@ import {
   HttpException,
   HttpStatus,
   Logger,
+  Param,
   Patch,
   Post,
   Query,
@@ -51,8 +52,8 @@ export class JobController {
     }
   }
 
-  @Get('jobId')
-  async GetJobById(@Query('id') id: string) {
+  @Get(':id')
+  async GetJobById(@Param('id') id: string) {
     try {
       const job = await this.jobService.getJobById(id);
       if (!Object.values(job)[0]?.id)

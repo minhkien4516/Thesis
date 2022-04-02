@@ -5,6 +5,7 @@ import {
   HttpException,
   HttpStatus,
   Logger,
+  Param,
   Patch,
   Post,
   Query,
@@ -70,8 +71,8 @@ export class CorporationController {
     }
   }
 
-  @Get('presenterId')
-  async GetCorporationByPresenterId(@Query('presenterId') presenterId: string) {
+  @Get(':presenterId')
+  async GetCorporationByPresenterId(@Param('presenterId') presenterId: string) {
     try {
       const corporation =
         await this.corporationService.getCorporationByPresenterId(presenterId);
@@ -94,8 +95,8 @@ export class CorporationController {
     }
   }
 
-  @Get('corporationId')
-  async GetCorporationById(@Query('id') id: string) {
+  @Get(':id')
+  async GetCorporationById(@Param('id') id: string) {
     try {
       const corporation =
         await this.corporationService.getCorporationByPresenterId(id);

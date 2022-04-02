@@ -7,7 +7,7 @@ export class AddNewLocationDto {
 
   @IsString()
   @IsNotEmpty()
-  city?: number;
+  city?: string;
 
   @IsString()
   @IsNotEmpty()

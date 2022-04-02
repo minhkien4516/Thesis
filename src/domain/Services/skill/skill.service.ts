@@ -6,20 +6,30 @@ import { Skill } from '../../Models/skill.model';
 import { AddNewSkillDto } from './dtos/addNewSkill.dto';
 import { AddJobSkillDto } from './dtos/addJobSkill.dto';
 import { UpdateSkillDto } from './dtos/updateSkill.dto';
+import slugify from 'slugify';
 @Injectable()
 export class SkillService {
   private readonly logger = new Logger('SkillService');
 
   constructor(private readonly sequelize: Sequelize) {}
 
-  public async addNewSkill(addNewJobDto: AddNewSkillDto): Promise<Skill> {
+  public async addNewSkill(addNewSkillDto: AddNewSkillDto): Promise<Skill> {
     try {
+      if (!addNewSkillDto.name) return null;
+      const slug = slugify(addNewSkillDto.name, {
+        lower: true,
+        trim: true,
+        replacement: '-',
+      });
       const inserted = await this.sequelize.query(
-        'SP_AddNewSkill @name=:name, @level=:level',
+        'SP_AddNewSkill @name=:name, @level=:level, @position=:position, @slug=:slug',
         {
           type: QueryTypes.SELECT,
           replacements: {
-            ...addNewJobDto,
+            name: addNewSkillDto.name,
+            level: addNewSkillDto.level,
+            position: addNewSkillDto.position,
+            slug,
           },
           raw: true,
           mapToModel: true,
@@ -56,13 +66,22 @@ export class SkillService {
 
   async UpdateSkill(id: string, updateSkillDto: UpdateSkillDto) {
     try {
+      if (!updateSkillDto.name) return null;
+      const slug = slugify(updateSkillDto.name, {
+        lower: true,
+        trim: true,
+        replacement: '-',
+      });
       const updated = await this.sequelize.query(
-        'SP_UpdateSkill @id=:id,@name=:name, @level=:level',
+        'SP_UpdateSkill @id=:id,@name=:name, @level=:level, @position=:position, @slug=:slug',
         {
           type: QueryTypes.UPDATE,
           replacements: {
             id,
-            ...updateSkillDto,
+            name: updateSkillDto.name,
+            level: updateSkillDto.level,
+            position: updateSkillDto.position,
+            slug,
           },
           raw: true,
           mapToModel: true,

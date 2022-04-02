@@ -3,6 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
 import { Location } from '../../Models/location.model';
 import { DatabaseError, QueryTypes } from 'sequelize';
+import slugify from 'slugify';
 import { AddJobLocationDto } from './dtos/addJobLocation.dto';
 import { UpdateLocationDto } from './dtos/updateLocation.dto';
 
@@ -16,11 +17,26 @@ export class LocationService {
     addNewLocationDto: AddNewLocationDto,
   ): Promise<Location> {
     try {
+      if (!addNewLocationDto.city) return null;
+      const slug = slugify(addNewLocationDto.city, {
+        lower: true,
+        trim: true,
+        replacement: '-',
+      });
       const inserted = await this.sequelize.query(
-        'SP_AddNewLocation @country=:country, @city=:city,@district=:district,@ward=:ward,@street=:street,@details=:details',
+        'SP_AddNewLocation @country=:country, @city=:city,@district=:district,' +
+          '@ward=:ward,@street=:street,@details=:details,@slug=:slug',
         {
           type: QueryTypes.SELECT,
-          replacements: { ...addNewLocationDto },
+          replacements: {
+            country: addNewLocationDto.country,
+            city: addNewLocationDto.city,
+            district: addNewLocationDto.district,
+            ward: addNewLocationDto.ward,
+            street: addNewLocationDto.street,
+            details: addNewLocationDto.details,
+            slug,
+          },
           raw: true,
           mapToModel: true,
           model: Location,
@@ -58,14 +74,26 @@ export class LocationService {
 
   async UpdateLocation(id: string, updateLocationDto: UpdateLocationDto) {
     try {
+      if (!updateLocationDto.city) return null;
+      const slug = slugify(updateLocationDto.city, {
+        lower: true,
+        trim: true,
+        replacement: '-',
+      });
       const updated = await this.sequelize.query(
         'SP_UpdateLocation @id=:id,@country=:country, @city=:city,' +
-          '@district=:district, @ward=:ward, @street=:street, @details=:details',
+          '@district=:district, @ward=:ward, @street=:street, @details=:details,@slug=:slug',
         {
           type: QueryTypes.UPDATE,
           replacements: {
             id,
-            ...updateLocationDto,
+            country: updateLocationDto.country,
+            city: updateLocationDto.city,
+            district: updateLocationDto.district,
+            ward: updateLocationDto.ward,
+            street: updateLocationDto.street,
+            details: updateLocationDto.details,
+            slug,
           },
           raw: true,
           mapToModel: true,

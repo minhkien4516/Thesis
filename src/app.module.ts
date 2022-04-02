@@ -9,6 +9,7 @@ import databaseConfig from './database/database.config';
 import { JobModule } from './domain/Services/job/job.module';
 import { LocationModule } from './domain/Services/location/location.module';
 import { SkillModule } from './domain/Services/skill/skill.module';
+import { SearchModule } from './domain/Services/search/search.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { SkillModule } from './domain/Services/skill/skill.module';
     JobModule,
     LocationModule,
     SkillModule,
+    SearchModule,
   ],
   providers: [
     {

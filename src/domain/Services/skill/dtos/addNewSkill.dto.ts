@@ -8,6 +8,10 @@ export class AddNewSkillDto {
   @IsString()
   @IsNotEmpty()
   level?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  position?: string;
 }
 
 export class AddNewSkillsDto {

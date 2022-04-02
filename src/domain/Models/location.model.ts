@@ -8,6 +8,7 @@ export class Location extends Model {
   ward: string;
   street: string;
   details: string;
+  slug: string;
   isActive: boolean;
   isRegistered: boolean;
   createdAt: string;
