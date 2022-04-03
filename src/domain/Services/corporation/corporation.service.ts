@@ -52,15 +52,15 @@ export class CorporationService {
   }
 
   public async getCorporationByPresenterId(
-    presenterId: string,
+    id: string,
   ): Promise<CorporationFilter[]> {
     try {
       const corporation: CorporationFilter[] = await this.sequelize.query(
-        'SP_GetCorporationByPresenterId @presenterId=:presenterId',
+        'SP_GetCorporationByPresenterId @presenterId=:id',
         {
           type: QueryTypes.SELECT,
           replacements: {
-            presenterId,
+            id,
           },
           raw: true,
         },

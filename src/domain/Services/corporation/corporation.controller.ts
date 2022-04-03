@@ -70,54 +70,6 @@ export class CorporationController {
       );
     }
   }
-
-  @Get(':presenterId')
-  async GetCorporationByPresenterId(@Param('presenterId') presenterId: string) {
-    try {
-      const corporation =
-        await this.corporationService.getCorporationByPresenterId(presenterId);
-      if (!Object.values(corporation)[0]?.presenterId)
-        throw new HttpException(
-          `Corporation does not have that presenterId. Please try again ...`,
-          HttpStatus.BAD_REQUEST,
-        );
-
-      const { files } = await this.getImages(Object.values(corporation)[0].id);
-      Object.values(corporation)[0].images = files;
-
-      return { corporation: corporation[0] };
-    } catch (error) {
-      this.logger.error(error.message);
-      throw new HttpException(
-        error.message,
-        error?.status || HttpStatus.SERVICE_UNAVAILABLE,
-      );
-    }
-  }
-
-  @Get(':id')
-  async GetCorporationById(@Param('id') id: string) {
-    try {
-      const corporation =
-        await this.corporationService.getCorporationByPresenterId(id);
-      if (!Object.values(corporation)[0]?.id)
-        throw new HttpException(
-          `Corporation does not have that id. Please try again ...`,
-          HttpStatus.BAD_REQUEST,
-        );
-
-      const { files } = await this.getImages(Object.values(corporation)[0].id);
-      Object.values(corporation)[0].images = files;
-
-      return { corporation: corporation[0] };
-    } catch (error) {
-      this.logger.error(error.message);
-      throw new HttpException(
-        error.message,
-        error?.status || HttpStatus.SERVICE_UNAVAILABLE,
-      );
-    }
-  }
   @Get('all')
   public async GetAllCorporation(
     @Query('limit') limit: number,
@@ -145,6 +97,54 @@ export class CorporationController {
       }
 
       return { data: [], pagination: { total: 0 } };
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new HttpException(
+        error.message,
+        error?.status || HttpStatus.SERVICE_UNAVAILABLE,
+      );
+    }
+  }
+
+  @Get('presenter')
+  async GetCorporationByPresenterId(@Query('id') id: string) {
+    try {
+      const corporation =
+        await this.corporationService.getCorporationByPresenterId(id);
+      if (!Object.values(corporation)[0]?.presenterId)
+        throw new HttpException(
+          `Corporation does not have that presenterId. Please try again ...`,
+          HttpStatus.BAD_REQUEST,
+        );
+
+      const { files } = await this.getImages(Object.values(corporation)[0].id);
+      Object.values(corporation)[0].images = files;
+
+      return { corporation: corporation[0] };
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new HttpException(
+        error.message,
+        error?.status || HttpStatus.SERVICE_UNAVAILABLE,
+      );
+    }
+  }
+
+  @Get()
+  async GetCorporationById(@Query('id') id: string) {
+    try {
+      const corporation =
+        await this.corporationService.getCorporationByPresenterId(id);
+      if (!Object.values(corporation)[0]?.id)
+        throw new HttpException(
+          `Corporation does not have that id. Please try again ...`,
+          HttpStatus.BAD_REQUEST,
+        );
+
+      const { files } = await this.getImages(Object.values(corporation)[0].id);
+      Object.values(corporation)[0].images = files;
+
+      return { corporation: corporation[0] };
     } catch (error) {
       this.logger.error(error.message);
       throw new HttpException(

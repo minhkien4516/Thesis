@@ -75,19 +75,19 @@ export class JobService {
     }
   }
 
-  public async getAllJob(
-    corporationId: string,
+  public async getAllJobInCorporation(
+    id: string,
     limit?: number,
     offset?: number,
   ) {
     try {
       if (limit < 1 || offset < 0) return [];
       const totalJob = await this.sequelize.query(
-        'SP_GetAllJob @corporationId=:corporationId,@limit=:limit,@offset=:offset',
+        'SP_GetAllJob @corporationId=:id,@limit=:limit,@offset=:offset',
         {
           type: QueryTypes.SELECT,
           replacements: {
-            corporationId,
+            id,
             limit,
             offset,
           },
@@ -101,20 +101,66 @@ export class JobService {
     }
   }
 
-  async getTotalJobsForClient() {
+  public async getAllJobForStudent(limit?: number, offset?: number) {
     try {
-      const total = await this.sequelize.query('SP_GetTotalJobForClient', {
-        type: QueryTypes.SELECT,
-        raw: true,
-        mapToModel: true,
-        model: Job,
-      });
+      if (limit < 1 || offset < 0) return [];
+      const totalJob = await this.sequelize.query(
+        'SP_GetAllJobForStudent @limit=:limit,@offset=:offset',
+        {
+          type: QueryTypes.SELECT,
+          replacements: {
+            limit,
+            offset,
+          },
+          raw: true,
+        },
+      );
+      return totalJob;
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new DatabaseError(error);
+    }
+  }
+
+  async getTotalJobsInCorporationForClient(id: string) {
+    try {
+      const total = await this.sequelize.query(
+        'SP_GetTotalJobInCorporationForClient @corporationId=:id',
+        {
+          type: QueryTypes.SELECT,
+          replacements: {
+            id,
+          },
+          raw: true,
+          mapToModel: true,
+          model: Job,
+        },
+      );
       return total[0];
     } catch (error) {
       this.logger.error(error.message);
       throw new DatabaseError(error);
     }
   }
+
+  async getTotalJobsForStudent() {
+    try {
+      const total = await this.sequelize.query(
+        'SP_GetTotalJobInCorporationForClient ',
+        {
+          type: QueryTypes.SELECT,
+          raw: true,
+          mapToModel: true,
+          model: Job,
+        },
+      );
+      return total[0];
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new DatabaseError(error);
+    }
+  }
+
   async UpdateJob(id: string, updateJobDto: UpdateJobDto) {
     try {
       const updated = await this.sequelize.query(

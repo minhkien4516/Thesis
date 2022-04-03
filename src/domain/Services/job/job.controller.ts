@@ -52,8 +52,8 @@ export class JobController {
     }
   }
 
-  @Get(':id')
-  async GetJobById(@Param('id') id: string) {
+  @Get()
+  async GetJobById(@Query('id') id: string) {
     try {
       const job = await this.jobService.getJobById(id);
       if (!Object.values(job)[0]?.id)
@@ -73,19 +73,45 @@ export class JobController {
     }
   }
 
-  @Get('all')
-  public async GetAllJob(
-    @Query('corporationId') corporationId: string,
+  @Get('all/corporation')
+  public async GetAllJobInCorporation(
+    @Query('id') id: string,
     @Query('limit') limit: number,
     @Query('offset') offset: number,
   ) {
     try {
-      const data = await this.jobService.getAllJob(
-        corporationId,
+      const data = await this.jobService.getAllJobInCorporation(
+        id,
         limit,
         offset,
       );
-      const total = await this.jobService.getTotalJobsForClient();
+      const total = await this.jobService.getTotalJobsInCorporationForClient(
+        id,
+      );
+      console.log(data.length);
+      console.log(Object.values(total)[0]);
+      if (Object.values(total)[0] > 0 && data.length > 0) {
+        return { data, pagination: total };
+      }
+
+      return { data: [], pagination: { total: 0 } };
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new HttpException(
+        error.message,
+        error?.status || HttpStatus.SERVICE_UNAVAILABLE,
+      );
+    }
+  }
+
+  @Get('all')
+  public async GetAllJobForStudent(
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
+  ) {
+    try {
+      const data = await this.jobService.getAllJobForStudent(limit, offset);
+      const total = await this.jobService.getTotalJobsForStudent();
       console.log(data.length);
       console.log(Object.values(total)[0]);
       if (Object.values(total)[0] > 0 && data.length > 0) {
