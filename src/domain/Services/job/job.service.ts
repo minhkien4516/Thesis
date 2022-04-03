@@ -113,9 +113,30 @@ export class JobService {
             offset,
           },
           raw: true,
+          mapToModel: true,
+          model: Job,
         },
       );
       return totalJob;
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new DatabaseError(error);
+    }
+  }
+
+  async getAllDataForStudentByJobId(id: string) {
+    try {
+      const total = await this.sequelize.query(
+        ' SP_GetAllDataForStudentByJobId @jobId=:id',
+        {
+          type: QueryTypes.SELECT,
+          replacements: {
+            id,
+          },
+          raw: true,
+        },
+      );
+      return total;
     } catch (error) {
       this.logger.error(error.message);
       throw new DatabaseError(error);
@@ -145,15 +166,12 @@ export class JobService {
 
   async getTotalJobsForStudent() {
     try {
-      const total = await this.sequelize.query(
-        'SP_GetTotalJobInCorporationForClient ',
-        {
-          type: QueryTypes.SELECT,
-          raw: true,
-          mapToModel: true,
-          model: Job,
-        },
-      );
+      const total = await this.sequelize.query('SP_GetTotalJobForStudent ', {
+        type: QueryTypes.SELECT,
+        raw: true,
+        mapToModel: true,
+        model: Job,
+      });
       return total[0];
     } catch (error) {
       this.logger.error(error.message);

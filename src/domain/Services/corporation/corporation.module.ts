@@ -24,5 +24,6 @@ import { FilesModule } from '../files/files.module';
   ],
   controllers: [CorporationController],
   providers: [CorporationService],
+  exports: [CorporationService],
 })
 export class CorporationModule {}

@@ -1,3 +1,4 @@
+import { CorporationService } from './../corporation/corporation.service';
 import {
   Body,
   Controller,
@@ -15,6 +16,8 @@ import { GET_JOB } from '../../../constants/cacheKey.constant';
 import { AddNewJobsDto } from './dtos/addNewJob.dto';
 import { UpdateJobDto } from './dtos/updateJob.dto';
 import { JobService } from './Job.service';
+import { SkillService } from '../skill/skill.service';
+import { LocationService } from '../location/location.service';
 
 @Controller('job')
 export class JobController {
@@ -22,6 +25,9 @@ export class JobController {
 
   constructor(
     private jobService: JobService,
+    private corporationService: CorporationService,
+    private skillService: SkillService,
+    private locationService: LocationService,
     @InjectRedis() private readonly redis: Redis,
   ) {}
 
@@ -110,15 +116,28 @@ export class JobController {
     @Query('offset') offset: number,
   ) {
     try {
+      let allData;
       const data = await this.jobService.getAllJobForStudent(limit, offset);
       const total = await this.jobService.getTotalJobsForStudent();
       console.log(data.length);
+      console.log(Object.values(data)[0].id);
       console.log(Object.values(total)[0]);
       if (Object.values(total)[0] > 0 && data.length > 0) {
-        return { data, pagination: total };
+        await Promise.all(
+          data.map(async (item) => {
+            let relevant = await this.jobService.getAllDataForStudentByJobId(
+              item.id,
+            );
+            console.log(relevant);
+            relevant = allData;
+            console.log(allData);
+            return allData;
+          }),
+        );
+        return { job: data, allData, pagination: total };
       }
 
-      return { data: [], pagination: { total: 0 } };
+      return { job: [], pagination: { total: 0 } };
     } catch (error) {
       this.logger.error(error.message);
       throw new HttpException(

@@ -3,6 +3,9 @@ import { Module } from '@nestjs/common';
 import { JobController } from './Job.controller';
 import { RedisModule } from '@svtslv/nestjs-ioredis';
 import { ttlDefault } from '../../../constants/timeout.constant';
+import { CorporationModule } from '../corporation/corporation.module';
+import { LocationModule } from '../location/location.module';
+import { SkillModule } from '../skill/skill.module';
 
 @Module({
   imports: [
@@ -20,6 +23,9 @@ import { ttlDefault } from '../../../constants/timeout.constant';
         },
       }),
     }),
+    CorporationModule,
+    LocationModule,
+    SkillModule,
   ],
   controllers: [JobController],
   providers: [JobService],
