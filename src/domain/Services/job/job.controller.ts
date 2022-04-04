@@ -18,6 +18,7 @@ import { UpdateJobDto } from './dtos/updateJob.dto';
 import { JobService } from './Job.service';
 import { SkillService } from '../skill/skill.service';
 import { LocationService } from '../location/location.service';
+import { JobFilterResponse } from '../../interfaces/getJobForClients.interface';
 
 @Controller('job')
 export class JobController {
@@ -114,30 +115,24 @@ export class JobController {
   public async GetAllJobForStudent(
     @Query('limit') limit: number,
     @Query('offset') offset: number,
-  ) {
+  ): Promise<JobFilterResponse> {
     try {
-      let allData;
       const data = await this.jobService.getAllJobForStudent(limit, offset);
       const total = await this.jobService.getTotalJobsForStudent();
-      console.log(data.length);
-      console.log(Object.values(data)[0].id);
-      console.log(Object.values(total)[0]);
       if (Object.values(total)[0] > 0 && data.length > 0) {
         await Promise.all(
           data.map(async (item) => {
-            let relevant = await this.jobService.getAllDataForStudentByJobId(
+            const relevant = await this.jobService.getAllDataForStudentByJobId(
               item.id,
             );
-            console.log(relevant);
-            relevant = allData;
-            console.log(allData);
-            return allData;
+            item.details = relevant;
+            return item.details;
           }),
         );
-        return { job: data, allData, pagination: total };
+        return { data, pagination: total };
       }
 
-      return { job: [], pagination: { total: 0 } };
+      return { data: [], pagination: { total: 0 } };
     } catch (error) {
       this.logger.error(error.message);
       throw new HttpException(

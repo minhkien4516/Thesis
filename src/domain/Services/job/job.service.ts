@@ -5,6 +5,7 @@ import { Job } from '../../Models/job.model';
 import { DatabaseError, QueryTypes } from 'sequelize';
 import { UpdateJobDto } from './dtos/updateJob.dto';
 import { AddCorporationJobDto } from './dtos/addCorporationJob.dto';
+import { JobFilter } from '../../interfaces/getJobForClients.interface';
 
 @Injectable()
 export class JobService {
@@ -101,10 +102,13 @@ export class JobService {
     }
   }
 
-  public async getAllJobForStudent(limit?: number, offset?: number) {
+  public async getAllJobForStudent(
+    limit?: number,
+    offset?: number,
+  ): Promise<JobFilter[]> {
     try {
       if (limit < 1 || offset < 0) return [];
-      const totalJob = await this.sequelize.query(
+      const totalJob: JobFilter[] = await this.sequelize.query(
         'SP_GetAllJobForStudent @limit=:limit,@offset=:offset',
         {
           type: QueryTypes.SELECT,
@@ -112,9 +116,6 @@ export class JobService {
             limit,
             offset,
           },
-          raw: true,
-          mapToModel: true,
-          model: Job,
         },
       );
       return totalJob;
@@ -129,14 +130,27 @@ export class JobService {
       const total = await this.sequelize.query(
         ' SP_GetAllDataForStudentByJobId @jobId=:id',
         {
-          type: QueryTypes.SELECT,
+          type: QueryTypes.RAW,
           replacements: {
             id,
           },
           raw: true,
         },
       );
-      return total;
+      if (
+        typeof Object.keys(total) == null ||
+        typeof Object.keys(total) == 'undefined' ||
+        !total[0].length
+      )
+        return total[0];
+      {
+        const info: string = total[0]
+          .map((each: string) => {
+            return Object.values(each)[0];
+          })
+          .reduce((acc: string, curr: string) => acc + curr, '');
+        return JSON.parse(info);
+      }
     } catch (error) {
       this.logger.error(error.message);
       throw new DatabaseError(error);
