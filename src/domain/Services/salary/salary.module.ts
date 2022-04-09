@@ -1,6 +1,6 @@
-import { SkillService } from './skill.service';
+import { SalaryService } from './salary.service';
 import { Module } from '@nestjs/common';
-import { SkillController } from './skill.controller';
+import { SalaryController } from './salary.controller';
 import { RedisModule } from '@nestjs-modules/ioredis';
 
 @Module({
@@ -20,8 +20,8 @@ import { RedisModule } from '@nestjs-modules/ioredis';
       }),
     }),
   ],
-  controllers: [SkillController],
-  providers: [SkillService],
-  exports: [SkillService],
+  controllers: [SalaryController],
+  providers: [SalaryService],
+  exports: [SalaryService],
 })
-export class SkillModule {}
+export class SalaryModule {}

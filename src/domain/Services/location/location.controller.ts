@@ -1,3 +1,4 @@
+import { InjectRedis, Redis } from '@nestjs-modules/ioredis';
 import {
   Body,
   Controller,
@@ -8,7 +9,6 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { InjectRedis, Redis } from '@svtslv/nestjs-ioredis';
 import { GET_LOCATION } from '../../../constants/cacheKey.constant';
 import { AddNewLocationDto } from './dtos/addNewLocation.dto';
 import { UpdateLocationDto } from './dtos/updateLocation.dto';
@@ -23,9 +23,9 @@ export class LocationController {
     @InjectRedis() private readonly redis: Redis,
   ) {}
 
-  @Post()
-  async addNewLocation(
-    @Query('jobId') jobId: string,
+  @Post('job')
+  async addNewLocationJob(
+    @Query('id') id: string,
     @Body() addNewLocationDto: AddNewLocationDto,
   ) {
     try {
@@ -33,7 +33,42 @@ export class LocationController {
         ...addNewLocationDto,
       });
       await this.locationService.addJobLocation({
-        jobId,
+        id,
+        locationId: location.id,
+      });
+      await this.redis.del(
+        GET_LOCATION +
+          `{${
+            addNewLocationDto.details +
+            addNewLocationDto.street +
+            addNewLocationDto.ward +
+            addNewLocationDto.district +
+            addNewLocationDto.city +
+            addNewLocationDto.country
+          }}`,
+      );
+
+      return location;
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new HttpException(
+        error.message,
+        error?.status || HttpStatus.SERVICE_UNAVAILABLE,
+      );
+    }
+  }
+
+  @Post('corporation')
+  async addNewLocationCorporation(
+    @Query('id') id: string,
+    @Body() addNewLocationDto: AddNewLocationDto,
+  ) {
+    try {
+      const location = await this.locationService.addNewLocation({
+        ...addNewLocationDto,
+      });
+      await this.locationService.addCorporationLocation({
+        id,
         locationId: location.id,
       });
       await this.redis.del(

@@ -1,4 +1,3 @@
-import { CorporationService } from './../corporation/corporation.service';
 import {
   Body,
   Controller,
@@ -6,19 +5,16 @@ import {
   HttpException,
   HttpStatus,
   Logger,
-  Param,
   Patch,
   Post,
   Query,
 } from '@nestjs/common';
-import { InjectRedis, Redis } from '@svtslv/nestjs-ioredis';
 import { GET_JOB } from '../../../constants/cacheKey.constant';
 import { AddNewJobsDto } from './dtos/addNewJob.dto';
 import { UpdateJobDto } from './dtos/updateJob.dto';
-import { JobService } from './Job.service';
-import { SkillService } from '../skill/skill.service';
-import { LocationService } from '../location/location.service';
+import { JobService } from './job.service';
 import { JobFilterResponse } from '../../interfaces/getJobForClients.interface';
+import { InjectRedis, Redis } from '@nestjs-modules/ioredis';
 
 @Controller('job')
 export class JobController {
@@ -26,9 +22,6 @@ export class JobController {
 
   constructor(
     private jobService: JobService,
-    private corporationService: CorporationService,
-    private skillService: SkillService,
-    private locationService: LocationService,
     @InjectRedis() private readonly redis: Redis,
   ) {}
 

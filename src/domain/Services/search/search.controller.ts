@@ -1,3 +1,4 @@
+import { InjectRedis, Redis } from '@nestjs-modules/ioredis';
 import {
   Controller,
   Get,
@@ -6,7 +7,6 @@ import {
   Logger,
   Query,
 } from '@nestjs/common';
-import { InjectRedis, Redis } from '@svtslv/nestjs-ioredis';
 import { FilesService } from '../files/files.service';
 import { SearchService } from './search.service';
 

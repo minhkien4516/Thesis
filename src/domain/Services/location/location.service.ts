@@ -6,6 +6,7 @@ import { DatabaseError, QueryTypes } from 'sequelize';
 import slugify from 'slugify';
 import { AddJobLocationDto } from './dtos/addJobLocation.dto';
 import { UpdateLocationDto } from './dtos/updateLocation.dto';
+import { AddCorporationLocationDto } from './dtos/addCorporationLocation.dto';
 
 @Injectable()
 export class LocationService {
@@ -55,11 +56,33 @@ export class LocationService {
   ): Promise<any> {
     try {
       const inserted = await this.sequelize.query(
-        'SP_AddJobLocation @jobId=:jobId, @locationId=:locationId',
+        'SP_AddJobLocation @jobId=:id, @locationId=:locationId',
         {
           type: QueryTypes.SELECT,
           replacements: {
             ...addJobLocationDto,
+          },
+          raw: true,
+        },
+      );
+      console.log(inserted);
+      return inserted[0];
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new DatabaseError(error);
+    }
+  }
+
+  public async addCorporationLocation(
+    addCorporationLocationDto: AddCorporationLocationDto,
+  ): Promise<any> {
+    try {
+      const inserted = await this.sequelize.query(
+        'SP_AddCorporationLocation @corporationId=:id, @locationId=:locationId',
+        {
+          type: QueryTypes.SELECT,
+          replacements: {
+            ...addCorporationLocationDto,
           },
           raw: true,
         },

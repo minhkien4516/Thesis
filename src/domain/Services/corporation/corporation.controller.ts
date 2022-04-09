@@ -13,7 +13,6 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { InjectRedis, Redis } from '@svtslv/nestjs-ioredis';
 import { firstValueFrom, timeout } from 'rxjs';
 import { GET_CORPORATION } from '../../../constants/cacheKey.constant';
 import { FilesService } from '../files/files.service';
@@ -27,6 +26,7 @@ import { CorporationFilter } from '../../interfaces/getCorporationForClients.int
 import { defaultTimeout } from '../../../constants/timeout.constant';
 import { CorporationFilterResponse } from '../../interfaces/getCorporationForClients.interface';
 import { UpdateCorporationDto } from './dtos/updateCorporation.dto';
+import { InjectRedis, Redis } from '@nestjs-modules/ioredis';
 
 @Controller('corporation')
 export class CorporationController {

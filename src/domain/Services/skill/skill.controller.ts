@@ -1,3 +1,4 @@
+import { InjectRedis, Redis } from '@nestjs-modules/ioredis';
 import {
   Body,
   Controller,
@@ -8,7 +9,6 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { InjectRedis, Redis } from '@svtslv/nestjs-ioredis';
 import { GET_SKILL } from '../../../constants/cacheKey.constant';
 import { AddNewSkillsDto } from './dtos/addNewSkill.dto';
 import { UpdateSkillDto } from './dtos/updateSkill.dto';
@@ -24,7 +24,7 @@ export class SkillController {
   ) {}
 
   @Post()
-  async addNewJob(
+  async addNewJobSkill(
     @Query('jobId') jobId: string,
     @Body() addNewSkillsDto: AddNewSkillsDto,
   ) {

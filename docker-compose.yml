@@ -5,14 +5,16 @@ services:
     build:
       dockerfile: Dockerfile
     environment:
-      - PORT = 3000
-      - DB_HOST = localhost
-      - DB_PORT = 1401
-      - DB_USERNAME = sa
-      - DB_PASSWORD = kien@04052000
-      - DB_NAME = Corporation_Service_Db
-    ports:
-      - '3000:3000'
+      - PORT=3000
+      - DB_HOST=localhost
+      - DB_PORT=1401
+      - DB_USERNAME=sa
+      - DB_PASSWORD=abc@12345
+      - DB_NAME=Corporation_Service_Db
+      - REDIS_HOST=redis-14924.c291.ap-southeast-2-1.ec2.cloud.redislabs.com
+      - REDIS_PORT=14924
+      - REDIS_USERNAME=admin
+      - REDIS_PASSWORD=Kien@04052000
     depends_on:
       - mssql-db
       - redis-cache
@@ -23,37 +25,35 @@ services:
     mem_limit: 128m
     cpus: 0.2
 
-  mssql-db:
-    container_name: mssql-db
-    build:
-      dockerfile: Dockerfile
-    environment:
-      - PORT = 1401
-      - DB_HOST = localhost
-      - DB_PORT = 1401
-      - DB_USERNAME = sa
-      - DB_PASSWORD = kien@04052000
-      - DB_NAME = Corporation_Service_Db
-    ports:
-      - '1401:1401'
-    expose:
-      - 1401
-    restart: unless-stopped
-    mem_limit: 128m
-    cpus: 0.2
-
-  redis-cache:
-    image: redis:6.2-alpine
-    container_name: redis-cache
-    restart: always
-    ports:
-      - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
-    volumes:
-      - ./redis-cache:/data
-
-volumes:
-  mssql-db:
-    driver: local
-  redis-cache:
-    driver: local
+  # mssql-db:
+  #   container_name: mssql-db
+  #   build:
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - PORT=1401
+  #     - DB_HOST = localhost
+  #     - DB_PORT = 1401
+  #     - DB_USERNAME = sa
+  #     - DB_PASSWORD = abc@12345
+  #     - DB_NAME = Corporation_Service_Db
+  #   ports:
+  #     - '1401:1401'
+  #   expose:
+  #     - 1401
+  #   restart: unless-stopped
+  #   mem_limit: 128m
+  #   cpus: 0.2
+#   redis-cache:
+#     image: redis:6.2-alpine
+#     container_name: redis-cache
+#     restart: always
+#     ports:
+#       - '6379:6379'
+#     command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+#     volumes:
+#       - ./redis-cache:/data
+# volumes:
+#   #   mssql-db:
+#   #     driver: local
+#   redis-cache:
+#     driver: local

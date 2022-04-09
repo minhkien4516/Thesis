@@ -1,31 +1,25 @@
-import { JobService } from './Job.service';
+import { JobService } from './job.service';
 import { Module } from '@nestjs/common';
-import { JobController } from './Job.controller';
-import { RedisModule } from '@svtslv/nestjs-ioredis';
+import { JobController } from './job.controller';
 import { ttlDefault } from '../../../constants/timeout.constant';
-import { CorporationModule } from '../corporation/corporation.module';
-import { LocationModule } from '../location/location.module';
-import { SkillModule } from '../skill/skill.module';
+import { RedisModule } from '@nestjs-modules/ioredis';
 
 @Module({
   imports: [
     RedisModule.forRootAsync({
       useFactory: () => ({
         config: {
-          // host: process.env.REDIS_HOST,
-          // port: Number(process.env.REDIS_PORT),
-          // username: process.env.REDIS_USERNAME,
-          // password: process.env.REDIS_PASSWORD,
+          host: process.env.REDIS_HOST,
+          port: Number(process.env.REDIS_PORT),
+          username: process.env.REDIS_USERNAME,
+          password: process.env.REDIS_PASSWORD,
 
-          host: 'localhost',
-          port: 6379,
-          ttl: ttlDefault,
+          // host: 'localhost',
+          // port: 6379,
+          // ttl: ttlDefault,
         },
       }),
     }),
-    CorporationModule,
-    LocationModule,
-    SkillModule,
   ],
   controllers: [JobController],
   providers: [JobService],
