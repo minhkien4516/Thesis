@@ -9,14 +9,15 @@ import { RedisModule } from '@nestjs-modules/ioredis';
     RedisModule.forRootAsync({
       useFactory: () => ({
         config: {
-          host: process.env.REDIS_HOST,
-          port: Number(process.env.REDIS_PORT),
-          username: process.env.REDIS_USERNAME,
-          password: process.env.REDIS_PASSWORD,
+          // host: process.env.REDIS_HOST,
+          // port: Number(process.env.REDIS_PORT),
+          // username: process.env.REDIS_USERNAME,
+          // password: process.env.REDIS_PASSWORD,
 
-          // host: 'localhost',
-          // port: 6379,
-          // ttl: ttlDefault,
+          host: process.env.REDIS_LOCAL_HOST,
+          port: Number(process.env.REDIS_LOCAL_PORT),
+          password: process.env.REDIS_LOCAL_PASSWORD,
+          ttl: ttlDefault,
         },
       }),
     }),

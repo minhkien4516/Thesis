@@ -26,6 +26,7 @@ export class SearchController {
     @Query('limit') limit: number,
     @Query('offset') offset: number,
   ) {
+    if (name.trim() == '') return { job: [] };
     try {
       const job = await this.searchService.getJobByTitle(name, limit, offset);
       return job;
@@ -43,6 +44,7 @@ export class SearchController {
     @Query('limit') limit: number,
     @Query('offset') offset: number,
   ) {
+    if (name.trim() == '') return { job: [] };
     try {
       const job = await this.searchService.getJobByCity(name, limit, offset);
       return job;
@@ -61,6 +63,7 @@ export class SearchController {
     @Query('limit') limit: number,
     @Query('offset') offset: number,
   ) {
+    if (name.trim() == '') return { job: [] };
     try {
       const job = await this.searchService.getJobByCorporation(
         name,
@@ -83,6 +86,7 @@ export class SearchController {
     @Query('limit') limit: number,
     @Query('offset') offset: number,
   ) {
+    if (name.trim() == '') return { job: [] };
     try {
       const job = await this.searchService.getJobBySkill(name, limit, offset);
       console.log(Object.values(job)[0]);
@@ -103,6 +107,7 @@ export class SearchController {
     @Query('limit') limit: number,
     @Query('offset') offset: number,
   ) {
+    if (name.trim() == '') return { job: [] };
     try {
       const job = await this.searchService.getJobByLevel(name, limit, offset);
       return job;

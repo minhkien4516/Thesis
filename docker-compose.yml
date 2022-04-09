@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.8'
 services:
   corporation-service:
     container_name: corporation-service
@@ -6,54 +6,63 @@ services:
       dockerfile: Dockerfile
     environment:
       - PORT=3000
-      - DB_HOST=localhost
+      - DB_HOST=host.docker.internal
       - DB_PORT=1401
       - DB_USERNAME=sa
       - DB_PASSWORD=abc@12345
       - DB_NAME=Corporation_Service_Db
-      - REDIS_HOST=redis-14924.c291.ap-southeast-2-1.ec2.cloud.redislabs.com
-      - REDIS_PORT=14924
-      - REDIS_USERNAME=admin
-      - REDIS_PASSWORD=Kien@04052000
-    depends_on:
-      - mssql-db
-      - redis-cache
+      - REDIS_LOCAL_HOST=redis-cache
+      - REDIS_LOCAL_PORT=6379
+      - REDIS_LOCAL_PASSWORD=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    # depends_on:
+    #   # - mssql-db
+    #   - redis-cache
+    ports:
+      - 3000:3000
     restart: unless-stopped
     links:
-      - mssql-db
+      # - mssql-db
       - redis-cache
     mem_limit: 128m
     cpus: 0.2
-
+    # networks:
+    #   - development
   # mssql-db:
   #   container_name: mssql-db
-  #   build:
-  #     dockerfile: Dockerfile
+  #   image: mcr.microsoft.com/mssql/server:2019-latest
+  #   volumes:
+  #     - ~/apps/mssql/data:/var/lib/mssqlql/data
   #   environment:
-  #     - PORT=1401
-  #     - DB_HOST = localhost
-  #     - DB_PORT = 1401
-  #     - DB_USERNAME = sa
-  #     - DB_PASSWORD = abc@12345
-  #     - DB_NAME = Corporation_Service_Db
-  #   ports:
-  #     - '1401:1401'
-  #   expose:
-  #     - 1401
-  #   restart: unless-stopped
-  #   mem_limit: 128m
+  #     - ACCEPT_EULA=Y
+  #     - SA_PASSWORD=abc@12345
+  #   healthcheck:
+  #     test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ""$$SA_PASSWORD"" -Q "SELECT 1" || exit 1
+  #     timeout: 45s
+  #     interval: 10s
+  #     retries: 10
+  #   mem_limit: 1Gb
   #   cpus: 0.2
-#   redis-cache:
-#     image: redis:6.2-alpine
-#     container_name: redis-cache
-#     restart: always
-#     ports:
-#       - '6379:6379'
-#     command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
-#     volumes:
-#       - ./redis-cache:/data
-# volumes:
-#   #   mssql-db:
-#   #     driver: local
-#   redis-cache:
-#     driver: local
+  #   ports:
+  #     - 1401:1433
+  #   networks:
+  #     - development
+  redis-cache:
+    container_name: redis-cache
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - redis-cache:/data
+    # networks:
+    #   - development
+
+# networks:
+#   development:
+#     driver: bridge
+volumes:
+  # mssql-db:
+  #   driver: local
+  redis-cache:
+    driver: local
