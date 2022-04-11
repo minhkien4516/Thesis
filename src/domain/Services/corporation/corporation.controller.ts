@@ -43,13 +43,11 @@ export class CorporationController {
   public async addNewCorporation(
     @Body() addNewCorporation: AddNewCorporationDto,
     @UploadedFiles() files: { files?: Express.Multer.File[] },
-  ): Promise<CorporationFilter> {
+  ): Promise<CorporationFilter[]> {
     try {
       const result = await this.corporationService.addNewCorporation({
         ...addNewCorporation,
       });
-      if (!!result) return {};
-
       await this.uploadImages(Object.values(result)[0].id, files.files);
       await Promise.all(
         result.map(async (item) => {
@@ -61,7 +59,7 @@ export class CorporationController {
       await this.redis.del(
         GET_CORPORATION + `${addNewCorporation.presenterId}`,
       );
-      return result[0];
+      return result;
     } catch (error) {
       this.logger.error(error.message);
       throw new HttpException(
@@ -87,9 +85,12 @@ export class CorporationController {
       if (Object.values(total)[0] > 0 && data.length > 0) {
         await Promise.all(
           data.map(async (item) => {
+            const relevant =
+              await this.corporationService.getLocationForCorporation(item.id);
             const { files } = await this.getImages(item.id);
             item.images = files;
-            return item.images;
+            item.location = relevant;
+            return { details: item.images, location: item.location };
           }),
         );
 
@@ -111,16 +112,16 @@ export class CorporationController {
     try {
       const corporation =
         await this.corporationService.getCorporationByPresenterId(id);
-      if (!Object.values(corporation)[0]?.presenterId)
-        throw new HttpException(
-          `Corporation does not have that presenterId. Please try again ...`,
-          HttpStatus.BAD_REQUEST,
+      console.log(Object.values(corporation)[0]);
+      if (Object.values(corporation)[0] == undefined) {
+        return { corporation: [] };
+      } else {
+        const { files } = await this.getImages(
+          Object.values(corporation)[0].id,
         );
-
-      const { files } = await this.getImages(Object.values(corporation)[0].id);
-      Object.values(corporation)[0].images = files;
-
-      return { corporation: corporation[0] };
+        Object.values(corporation)[0].images = files;
+        return { corporation };
+      }
     } catch (error) {
       this.logger.error(error.message);
       throw new HttpException(
@@ -133,18 +134,18 @@ export class CorporationController {
   @Get()
   async GetCorporationById(@Query('id') id: string) {
     try {
-      const corporation =
-        await this.corporationService.getCorporationByPresenterId(id);
-      if (!Object.values(corporation)[0]?.id)
-        throw new HttpException(
-          `Corporation does not have that id. Please try again ...`,
-          HttpStatus.BAD_REQUEST,
+      const corporation = await this.corporationService.getCorporationById(id);
+      console.log(Object.values(corporation)[0]);
+
+      if (Object.values(corporation)[0] == undefined) {
+        return { corporation: [] };
+      } else {
+        const { files } = await this.getImages(
+          Object.values(corporation)[0].id,
         );
-
-      const { files } = await this.getImages(Object.values(corporation)[0].id);
-      Object.values(corporation)[0].images = files;
-
-      return { corporation: corporation[0] };
+        Object.values(corporation)[0].images = files;
+        return { corporation };
+      }
     } catch (error) {
       this.logger.error(error.message);
       throw new HttpException(

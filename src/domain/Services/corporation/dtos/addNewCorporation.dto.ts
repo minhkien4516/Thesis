@@ -13,11 +13,11 @@ export class AddNewCorporationDto {
   @IsOptional()
   name: string;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
   @MinLength(7)
   @IsNotEmpty()
-  hotline: number;
+  hotline: string;
 
   @IsOptional()
   @IsEmail()
@@ -55,7 +55,7 @@ export class AddNewCorporationDto {
   origin: string;
 
   @IsOptional()
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  numberEmployees: number;
+  numberEmployees: string;
 }

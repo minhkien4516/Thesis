@@ -14,6 +14,20 @@ export interface CorporationFilter {
   isActive?: string;
   isRegistered?: string;
   slug?: string;
+  location?: Array<{
+    id: string;
+    country: string;
+    city: string;
+    district: string;
+    ward: string;
+    street: string;
+    details: string;
+    slug: string;
+    isActive: string;
+    isRegistered: string;
+    createdAt: string;
+    updatedAt: string;
+  }>;
   images?: Array<{
     id: string;
     ownerId: string;

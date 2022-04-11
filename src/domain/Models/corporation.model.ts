@@ -3,7 +3,7 @@ import { Model, Table } from 'sequelize-typescript';
 export class Corporation extends Model {
   id: string;
   name: string;
-  hotline: string | number;
+  hotline: number;
   email: string;
   presenterId: string;
   overtimeRequire: string;

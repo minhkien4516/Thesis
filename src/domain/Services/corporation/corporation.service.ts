@@ -53,38 +53,98 @@ export class CorporationService {
 
   public async getCorporationByPresenterId(
     id: string,
-  ): Promise<CorporationFilter[]> {
+  ): Promise<CorporationFilter> {
     try {
-      const corporation: CorporationFilter[] = await this.sequelize.query(
+      const corporation = await this.sequelize.query(
         'SP_GetCorporationByPresenterId @presenterId=:id',
         {
-          type: QueryTypes.SELECT,
+          type: QueryTypes.RAW,
           replacements: {
             id,
           },
           raw: true,
         },
       );
-      return corporation;
+
+      if (
+        typeof Object.keys(corporation) == null ||
+        typeof Object.keys(corporation) == 'undefined' ||
+        !corporation[0].length
+      )
+        return corporation[0][0];
+      {
+        const info: string = corporation[0]
+          .map((each: string) => {
+            return Object.values(each)[0];
+          })
+          .reduce((acc: string, curr: string) => acc + curr, '');
+        return JSON.parse(info);
+      }
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new DatabaseError(error);
+    }
+  }
+  public async getLocationForCorporation(id: string) {
+    try {
+      const location = await this.sequelize.query(
+        'SP_GetLocationForCorporationByCorporationId @id=:id',
+        {
+          type: QueryTypes.RAW,
+          replacements: {
+            id,
+          },
+          raw: true,
+        },
+      );
+
+      if (
+        typeof Object.keys(location) == null ||
+        typeof Object.keys(location) == 'undefined' ||
+        !location[0].length
+      )
+        return location[0][0];
+      {
+        const info: string = location[0]
+          .map((each: string) => {
+            return Object.values(each)[0];
+          })
+          .reduce((acc: string, curr: string) => acc + curr, '');
+        return JSON.parse(info);
+      }
     } catch (error) {
       this.logger.error(error.message);
       throw new DatabaseError(error);
     }
   }
 
-  public async getCorporationById(id: string): Promise<CorporationFilter[]> {
+  public async getCorporationById(id: string): Promise<CorporationFilter> {
     try {
-      const corporation: CorporationFilter[] = await this.sequelize.query(
+      const corporation = await this.sequelize.query(
         'SP_GetCorporationById @id=:id',
         {
-          type: QueryTypes.SELECT,
+          type: QueryTypes.RAW,
           replacements: {
             id,
           },
           raw: true,
         },
       );
-      return corporation;
+
+      if (
+        typeof Object.keys(corporation) == null ||
+        typeof Object.keys(corporation) == 'undefined' ||
+        !corporation[0].length
+      )
+        return corporation[0][0];
+      {
+        const info: string = corporation[0]
+          .map((each: string) => {
+            return Object.values(each)[0];
+          })
+          .reduce((acc: string, curr: string) => acc + curr, '');
+        return JSON.parse(info);
+      }
     } catch (error) {
       this.logger.error(error.message);
       throw new DatabaseError(error);
