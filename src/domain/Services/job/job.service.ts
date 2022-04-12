@@ -61,15 +61,26 @@ export class JobService {
   public async getJobById(id: string) {
     try {
       const job = await this.sequelize.query('SP_GetJobById @id=:id', {
-        type: QueryTypes.SELECT,
+        type: QueryTypes.RAW,
         replacements: {
           id,
         },
         raw: true,
-        mapToModel: true,
-        model: Job,
       });
-      return job;
+      if (
+        typeof Object.keys(job) == null ||
+        typeof Object.keys(job) == 'undefined' ||
+        !job[0].length
+      )
+        return job[0];
+      {
+        const info: string = job[0]
+          .map((each: string) => {
+            return Object.values(each)[0];
+          })
+          .reduce((acc: string, curr: string) => acc + curr, '');
+        return JSON.parse(info);
+      }
     } catch (error) {
       this.logger.error(error.message);
       throw new DatabaseError(error);
@@ -80,10 +91,10 @@ export class JobService {
     id: string,
     limit?: number,
     offset?: number,
-  ) {
+  ): Promise<JobFilter[]> {
     try {
       if (limit < 1 || offset < 0) return [];
-      const totalJob = await this.sequelize.query(
+      const totalJob: JobFilter[] = await this.sequelize.query(
         'SP_GetAllJob @corporationId=:id,@limit=:limit,@offset=:offset',
         {
           type: QueryTypes.SELECT,

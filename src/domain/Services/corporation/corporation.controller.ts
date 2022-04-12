@@ -175,11 +175,11 @@ export class CorporationController {
     }
   }
 
-  private async getImages(couponId: string): Promise<GetAllForOwnerResponse> {
+  public async getImages(id: string): Promise<GetAllForOwnerResponse> {
     try {
       const { files } = await firstValueFrom(
         this.fileService
-          .getAllForOwner({ ownerId: couponId })
+          .getAllForOwner({ ownerId: id })
           .pipe(timeout(defaultTimeout)),
       );
 
@@ -191,7 +191,7 @@ export class CorporationController {
     }
   }
 
-  private async uploadImages(
+  public async uploadImages(
     corporationId: string,
     filesParam: Express.Multer.File[],
   ): Promise<UploadFilesForOwnerResponse> {
