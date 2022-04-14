@@ -139,7 +139,7 @@ export class JobService {
   async getAllDataForStudentByJobId(id: string) {
     try {
       const total = await this.sequelize.query(
-        ' SP_GetAllDataForStudentByJobId @jobId=:id',
+        'SP_GetAllDataForStudentByJobId @jobId=:id',
         {
           type: QueryTypes.RAW,
           replacements: {

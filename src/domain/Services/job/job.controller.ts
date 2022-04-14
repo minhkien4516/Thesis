@@ -148,6 +148,15 @@ export class JobController {
               item.id,
             );
             item.details = relevant;
+            const location =
+              await this.corporationService.getLocationForCorporation(
+                Object.values(item.details.corporation)[0].id,
+              );
+            Object.values(item.details.corporation)[0].location = location;
+            const { files } = await this.getImages(
+              Object.values(item.details.corporation)[0].id,
+            );
+            Object.values(item.details.corporation)[0].images = files;
             return item.details;
           }),
         );

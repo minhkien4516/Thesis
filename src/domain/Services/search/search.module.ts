@@ -1,7 +1,9 @@
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { Module } from '@nestjs/common';
 import { ttlDefault } from '../../../constants/timeout.constant';
+import { CorporationModule } from '../corporation/corporation.module';
 import { FilesModule } from '../files/files.module';
+import { JobModule } from '../job/job.module';
 import { SearchController } from './search.controller';
 import { SearchService } from './search.service';
 @Module({
@@ -21,6 +23,8 @@ import { SearchService } from './search.service';
       }),
     }),
     FilesModule,
+    CorporationModule,
+    JobModule,
   ],
   controllers: [SearchController],
   providers: [SearchService],
