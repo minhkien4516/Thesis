@@ -18,8 +18,9 @@ export class HealthController {
   @HealthCheck()
   @ApiTags('Health')
   check() {
-    return this.healthService.check([
-      async () => this.db.pingCheck('database', { timeout: defaultTimeout }),
-    ]);
+    // return this.healthService.check([
+    //   async () => this.db.pingCheck('database', { timeout: defaultTimeout }),
+    return console.log('health check');
+    // ]);
   }
 }
