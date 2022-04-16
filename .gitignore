@@ -34,17 +34,5 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-.idea/
-.sourcemaps/
-.sass-cache/
-.tmp/
-.versions/
-coverage/
-www/
-dist/
-node_modules/
-tmp/
-temp/
-$RECYCLE.BIN/
-Thumbs.db
-UserInterfaceState.xcuserstate
+
+/*.env
