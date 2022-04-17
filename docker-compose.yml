@@ -6,8 +6,10 @@ services:
       dockerfile: Dockerfile
     environment:
       - PORT=3000
-      - DB_HOST=host.docker.internal
-      - DB_PORT=1401
+      # - DB_HOST=host.docker.internal
+      # - DB_PORT=1401
+      - DB_HOST=db-final.cdublfjfuteq.ap-southeast-1.rds.amazonaws.com
+      - DB_PORT=1433
       - DB_USERNAME=sa
       - DB_PASSWORD=abc@12345
       - DB_NAME=Corporation_Service_Db
