@@ -64,7 +64,7 @@ export class SkillService {
     }
   }
 
-  async UpdateSkill(id: string, updateSkillDto: UpdateSkillDto) {
+  async UpdateSkill(id: string, updateSkillDto?: UpdateSkillDto) {
     try {
       if (!updateSkillDto.name) return null;
       const slug = slugify(updateSkillDto.name, {
@@ -78,9 +78,9 @@ export class SkillService {
           type: QueryTypes.UPDATE,
           replacements: {
             id,
-            name: updateSkillDto.name,
-            level: updateSkillDto.level,
-            position: updateSkillDto.position,
+            name: updateSkillDto.name ?? null,
+            level: updateSkillDto.level ?? null,
+            position: updateSkillDto.position ?? null,
             slug,
           },
           raw: true,

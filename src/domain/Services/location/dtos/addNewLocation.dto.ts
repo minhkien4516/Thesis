@@ -3,25 +3,25 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class AddNewLocationDto {
   @IsString()
   @IsNotEmpty()
-  country?: string;
+  country?: string | null;
 
   @IsString()
   @IsNotEmpty()
-  city?: string;
+  city?: string | null;
 
   @IsString()
   @IsNotEmpty()
-  district?: string;
+  district?: string | null;
 
   @IsString()
   @IsNotEmpty()
-  ward?: string;
+  ward?: string | null;
 
   @IsString()
   @IsNotEmpty()
-  street?: string;
+  street?: string | null;
 
   @IsString()
   @IsNotEmpty()
-  details?: string;
+  details?: string | null;
 }

@@ -1,7 +1,6 @@
 import {
   IsEmail,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
   MinLength,
@@ -11,51 +10,51 @@ export class AddNewCorporationDto {
   @IsString()
   @IsNotEmpty()
   @IsOptional()
-  name: string;
+  name: string | null;
 
   @IsString()
   @IsOptional()
   @MinLength(7)
   @IsNotEmpty()
-  hotline: string;
+  hotline: string | null;
 
   @IsOptional()
   @IsEmail()
   @IsNotEmpty()
-  email: string;
+  email: string | null;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  presenterId: string;
+  presenterId: string | null;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  overtimeRequire: string;
+  overtimeRequire: string | null;
 
   @IsString()
   @IsNotEmpty()
   @IsOptional()
-  special: string;
+  special: string | null;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  startWorkTime: string;
+  startWorkTime: string | null;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  endWorkTime: string;
+  endWorkTime: string | null;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  origin: string;
+  origin: string | null;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  numberEmployees: string;
+  numberEmployees: string | null;
 }

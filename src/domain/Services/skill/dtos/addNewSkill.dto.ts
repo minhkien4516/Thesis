@@ -3,15 +3,15 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class AddNewSkillDto {
   @IsString()
   @IsNotEmpty()
-  name?: string;
+  name?: string | null;
 
   @IsString()
   @IsNotEmpty()
-  level?: string;
+  level?: string | null;
 
   @IsString()
   @IsNotEmpty()
-  position?: string;
+  position?: string | null;
 }
 
 export class AddNewSkillsDto {

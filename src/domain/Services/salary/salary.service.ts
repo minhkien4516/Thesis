@@ -56,7 +56,7 @@ export class SalaryService {
     }
   }
 
-  async UpdateSalary(id: string, updateSalaryDto: UpdateSalaryDto) {
+  async UpdateSalary(id: string, updateSalaryDto?: UpdateSalaryDto) {
     try {
       const updated = await this.sequelize.query(
         'SP_UpdateSalary @id=:id,@gt=:gt, @lt=:lt,@unit=:unit',
@@ -64,9 +64,9 @@ export class SalaryService {
           type: QueryTypes.UPDATE,
           replacements: {
             id,
-            gt: updateSalaryDto.gt,
-            lt: updateSalaryDto.lt,
-            unit: updateSalaryDto.unit,
+            gt: updateSalaryDto.gt ?? null,
+            lt: updateSalaryDto.lt ?? null,
+            unit: updateSalaryDto.unit ?? null,
           },
           raw: true,
           mapToModel: true,

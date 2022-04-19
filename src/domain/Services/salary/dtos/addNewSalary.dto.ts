@@ -3,13 +3,13 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class AddNewSalaryDto {
   @IsNumber()
   @IsNotEmpty()
-  gt?: number;
+  gt?: number | null;
 
   @IsNumber()
   @IsNotEmpty()
-  lt?: number;
+  lt?: number | null;
 
   @IsString()
   @IsNotEmpty()
-  unit?: string;
+  unit?: string | null;
 }

@@ -204,16 +204,19 @@ export class JobService {
     }
   }
 
-  async UpdateJob(id: string, updateJobDto: UpdateJobDto) {
+  async UpdateJob(id: string, updateJobDto?: UpdateJobDto) {
     try {
       const updated = await this.sequelize.query(
         'SP_UpdateJob @id=:id,@title=:title, @description=:description,' +
           '@dateCreated=:dateCreated, @numberCandidate=:numberCandidate',
         {
-          type: QueryTypes.UPDATE,
+          type: QueryTypes.SELECT,
           replacements: {
             id,
-            ...updateJobDto,
+            title: updateJobDto?.title ?? null,
+            description: updateJobDto?.description ?? null,
+            dateCreated: updateJobDto?.dateCreated ?? null,
+            numberCandidate: updateJobDto?.numberCandidate ?? null,
           },
           raw: true,
           mapToModel: true,

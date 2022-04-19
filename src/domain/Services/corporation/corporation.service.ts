@@ -195,7 +195,7 @@ export class CorporationService {
 
   async UpdateCorporation(
     id: string,
-    updateCorporationDto: UpdateCorporationDto,
+    updateCorporationDto?: UpdateCorporationDto,
   ) {
     try {
       if (!updateCorporationDto.name) return [];
@@ -209,18 +209,18 @@ export class CorporationService {
           '@special=:special,@startWorkTme=:startWorkTme,@endWorkTime=:endWorkTime,@origin=:origin,' +
           '@numberEmployees=:numberEmployees,@slug=:slug',
         {
-          type: QueryTypes.UPDATE,
+          type: QueryTypes.SELECT,
           replacements: {
             id,
-            name: updateCorporationDto?.name?.trim(),
-            hotline: updateCorporationDto?.hotline,
-            email: updateCorporationDto?.email,
-            overtimeRequire: updateCorporationDto?.overtimeRequire,
-            special: updateCorporationDto?.special,
-            startWorkTime: updateCorporationDto?.startWorkTime,
-            endWorkTime: updateCorporationDto?.endWorkTime,
-            origin: updateCorporationDto?.origin,
-            numberEmployees: updateCorporationDto?.numberEmployees,
+            name: updateCorporationDto?.name?.trim() ?? null,
+            hotline: updateCorporationDto?.hotline ?? null,
+            email: updateCorporationDto?.email ?? null,
+            overtimeRequire: updateCorporationDto?.overtimeRequire ?? null,
+            special: updateCorporationDto?.special ?? null,
+            startWorkTime: updateCorporationDto?.startWorkTime ?? null,
+            endWorkTime: updateCorporationDto?.endWorkTime ?? null,
+            origin: updateCorporationDto?.origin ?? null,
+            numberEmployees: updateCorporationDto?.numberEmployees ?? null,
             slug,
           },
           raw: true,

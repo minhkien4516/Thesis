@@ -95,9 +95,9 @@ export class LocationService {
     }
   }
 
-  async UpdateLocation(id: string, updateLocationDto: UpdateLocationDto) {
+  async UpdateLocation(id: string, updateLocationDto?: UpdateLocationDto) {
     try {
-      if (!updateLocationDto.city) return null;
+      if (!updateLocationDto.city) return [];
       const slug = slugify(updateLocationDto.city, {
         lower: true,
         trim: true,
@@ -107,15 +107,15 @@ export class LocationService {
         'SP_UpdateLocation @id=:id,@country=:country, @city=:city,' +
           '@district=:district, @ward=:ward, @street=:street, @details=:details,@slug=:slug',
         {
-          type: QueryTypes.UPDATE,
+          type: QueryTypes.SELECT,
           replacements: {
             id,
-            country: updateLocationDto.country,
-            city: updateLocationDto.city,
-            district: updateLocationDto.district,
-            ward: updateLocationDto.ward,
-            street: updateLocationDto.street,
-            details: updateLocationDto.details,
+            country: updateLocationDto.country ?? null,
+            city: updateLocationDto.city ?? null,
+            district: updateLocationDto.district ?? null,
+            ward: updateLocationDto.ward ?? null,
+            street: updateLocationDto.street ?? null,
+            details: updateLocationDto.details ?? null,
             slug,
           },
           raw: true,
@@ -123,7 +123,7 @@ export class LocationService {
           model: Location,
         },
       );
-      return updated[0];
+      return updated;
     } catch (error) {
       this.logger.error(error.message);
       throw new DatabaseError(error);
