@@ -1,4 +1,4 @@
-import { Model, Table } from 'sequelize-typescript';
+import { Model } from 'sequelize-typescript';
 
 export class Corporation extends Model {
   id: string;
