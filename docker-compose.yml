@@ -7,12 +7,12 @@ services:
     environment:
       - PORT=3000
       - DB_HOST=host.docker.internal
-      - DB_PORT=1433
+      - DB_PORT=1401
       # - DB_HOST=db-final.cdublfjfuteq.ap-southeast-1.rds.amazonaws.com
       # - DB_PORT=1433
       - DB_USERNAME=sa
       # - DB_PASSWORD=abc!123ABC
-      - DB_PASSWORD=abc!123ABC
+      - DB_PASSWORD=abc@12345
       - DB_NAME=Corporation_Service_Db
       - REDIS_LOCAL_HOST=redis-cache
       - REDIS_LOCAL_PORT=6379
@@ -50,7 +50,7 @@ services:
   #   networks:
   #     - development
   redis-cache:
-    container_name: redis-cache
+    container_name: redis-cache-database
     image: redis:6.2-alpine
     restart: always
     ports:
