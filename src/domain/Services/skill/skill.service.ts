@@ -66,12 +66,6 @@ export class SkillService {
 
   async UpdateSkill(id: string, updateSkillDto?: UpdateSkillDto) {
     try {
-      if (!updateSkillDto.name) return null;
-      const slug = slugify(updateSkillDto.name, {
-        lower: true,
-        trim: true,
-        replacement: '-',
-      });
       const updated = await this.sequelize.query(
         'SP_UpdateSkill @id=:id,@name=:name, @level=:level, @position=:position, @slug=:slug',
         {
@@ -81,13 +75,18 @@ export class SkillService {
             name: updateSkillDto.name ?? null,
             level: updateSkillDto.level ?? null,
             position: updateSkillDto.position ?? null,
-            slug,
+            slug: updateSkillDto.slug ?? null,
           },
           raw: true,
           mapToModel: true,
           model: Skill,
         },
       );
+      updated[0].slug = slugify(updated[0].name, {
+        lower: true,
+        trim: true,
+        replacement: '-',
+      });
       return updated[0];
     } catch (error) {
       this.logger.error(error.message);

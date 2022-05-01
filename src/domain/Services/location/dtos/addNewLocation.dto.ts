@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class AddNewLocationDto {
   @IsString()
@@ -24,4 +24,8 @@ export class AddNewLocationDto {
   @IsString()
   @IsNotEmpty()
   details?: string | null;
+
+  @IsString()
+  @IsOptional()
+  slug?: string | null;
 }

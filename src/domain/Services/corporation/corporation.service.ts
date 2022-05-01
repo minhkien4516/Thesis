@@ -198,12 +198,6 @@ export class CorporationService {
     updateCorporationDto?: UpdateCorporationDto,
   ) {
     try {
-      if (!updateCorporationDto.name) return [];
-      const slug = slugify(updateCorporationDto.name, {
-        lower: true,
-        trim: true,
-        replacement: '-',
-      });
       const updated = await this.sequelize.query(
         'SP_UpdateCorporation @id=:id,@name=:name,@hotline=:hotline,@email=:email,@overtimeRequire=:overtimeRequire,' +
           '@special=:special,@startWorkTme=:startWorkTme,@endWorkTime=:endWorkTime,@origin=:origin,' +
@@ -221,13 +215,18 @@ export class CorporationService {
             endWorkTime: updateCorporationDto?.endWorkTime ?? null,
             origin: updateCorporationDto?.origin ?? null,
             numberEmployees: updateCorporationDto?.numberEmployees ?? null,
-            slug,
+            slug: updateCorporationDto?.slug ?? null,
           },
           raw: true,
           mapToModel: true,
           model: Corporation,
         },
       );
+      updated[0].slug = slugify(updated[0].name, {
+        lower: true,
+        trim: true,
+        replacement: '-',
+      });
       return updated[0];
     } catch (error) {
       this.logger.error(error.message);

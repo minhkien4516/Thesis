@@ -57,4 +57,8 @@ export class AddNewCorporationDto {
   @IsString()
   @IsNotEmpty()
   numberEmployees: string | null;
+
+  @IsOptional()
+  @IsString()
+  slug: string | null;
 }

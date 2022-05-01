@@ -97,12 +97,6 @@ export class LocationService {
 
   async UpdateLocation(id: string, updateLocationDto?: UpdateLocationDto) {
     try {
-      if (!updateLocationDto.city) return [];
-      const slug = slugify(updateLocationDto.city, {
-        lower: true,
-        trim: true,
-        replacement: '-',
-      });
       const updated = await this.sequelize.query(
         'SP_UpdateLocation @id=:id,@country=:country, @city=:city,' +
           '@district=:district, @ward=:ward, @street=:street, @details=:details,@slug=:slug',
@@ -116,14 +110,19 @@ export class LocationService {
             ward: updateLocationDto.ward ?? null,
             street: updateLocationDto.street ?? null,
             details: updateLocationDto.details ?? null,
-            slug,
+            slug: updateLocationDto.slug ?? null,
           },
           raw: true,
           mapToModel: true,
           model: Location,
         },
       );
-      return updated;
+      updated[0].slug = slugify(updated[0].city, {
+        lower: true,
+        trim: true,
+        replacement: '-',
+      });
+      return updated[0];
     } catch (error) {
       this.logger.error(error.message);
       throw new DatabaseError(error);

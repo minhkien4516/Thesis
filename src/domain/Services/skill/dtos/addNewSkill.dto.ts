@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 
 export class AddNewSkillDto {
   @IsString()
@@ -12,6 +12,10 @@ export class AddNewSkillDto {
   @IsString()
   @IsNotEmpty()
   position?: string | null;
+
+  @IsString()
+  @IsOptional()
+  slug?: string | null;
 }
 
 export class AddNewSkillsDto {
