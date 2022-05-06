@@ -10,55 +10,53 @@ export class AddNewCorporationDto {
   @IsString()
   @IsNotEmpty()
   @IsOptional()
-  name: string | null;
+  name?: string | null;
 
   @IsString()
   @IsOptional()
   @MinLength(7)
   @IsNotEmpty()
-  hotline: string | null;
+  hotline?: string | null;
 
   @IsOptional()
   @IsEmail()
   @IsNotEmpty()
-  email: string | null;
+  email?: string | null;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  presenterId: string | null;
+  presenterId?: string | null;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  overtimeRequire: string | null;
+  overtimeRequire?: string | null;
 
   @IsString()
   @IsNotEmpty()
   @IsOptional()
-  special: string | null;
+  special?: string | null;
+
+  @IsOptional()
+  @IsNotEmpty()
+  startWorkTime?: string | Date | null;
+
+  @IsOptional()
+  @IsNotEmpty()
+  endWorkTime?: string | Date | null;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  startWorkTime: string | null;
+  origin?: string | null;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  endWorkTime: string | null;
+  numberEmployees?: number | null;
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  origin: string | null;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  numberEmployees: string | null;
-
-  @IsOptional()
-  @IsString()
-  slug: string | null;
+  slug?: string | null;
 }

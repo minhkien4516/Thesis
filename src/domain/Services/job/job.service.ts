@@ -127,6 +127,7 @@ export class JobService {
             limit,
             offset,
           },
+          raw: true,
         },
       );
       return totalJob;

@@ -3,7 +3,7 @@ import { AddNewCorporationDto } from './dtos/addNewCorporation.dto';
 import { Injectable, Logger } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
 import { QueryTypes, DatabaseError } from 'sequelize';
-import slugify from 'slugify';
+import slugify from 'vietnamese-slug';
 import { CorporationFilter } from '../../interfaces/getCorporationForClients.interface';
 import { UpdateCorporationDto } from './dtos/updateCorporation.dto';
 
@@ -200,7 +200,7 @@ export class CorporationService {
     try {
       const updated = await this.sequelize.query(
         'SP_UpdateCorporation @id=:id,@name=:name,@hotline=:hotline,@email=:email,@overtimeRequire=:overtimeRequire,' +
-          '@special=:special,@startWorkTme=:startWorkTme,@endWorkTime=:endWorkTime,@origin=:origin,' +
+          '@special=:special,@startWorkTime=:startWorkTime,@endWorkTime=:endWorkTime,@origin=:origin,' +
           '@numberEmployees=:numberEmployees,@slug=:slug',
         {
           type: QueryTypes.SELECT,
@@ -222,11 +222,7 @@ export class CorporationService {
           model: Corporation,
         },
       );
-      updated[0].slug = slugify(updated[0].name, {
-        lower: true,
-        trim: true,
-        replacement: '-',
-      });
+      updated[0].slug = slugify(updated[0].name);
       return updated[0];
     } catch (error) {
       this.logger.error(error.message);

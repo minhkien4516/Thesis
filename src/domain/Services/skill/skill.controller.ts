@@ -32,7 +32,6 @@ export class SkillController {
       const multiSkill = await Promise.all(
         addNewSkillsDto.skills.map(async (item) => {
           const skill = await this.skillService.addNewSkill(item);
-          console.log(skill);
           await this.skillService.addJobSkill({
             skillsId: skill.id,
             jobId,

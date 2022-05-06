@@ -43,7 +43,7 @@ export class CorporationController {
   public async addNewCorporation(
     @Body() addNewCorporation: AddNewCorporationDto,
     @UploadedFiles() files: { files?: Express.Multer.File[] },
-  ): Promise<CorporationFilter[]> {
+  ): Promise<CorporationFilter> {
     try {
       const result = await this.corporationService.addNewCorporation({
         ...addNewCorporation,
@@ -59,7 +59,8 @@ export class CorporationController {
       await this.redis.del(
         GET_CORPORATION + `${addNewCorporation.presenterId}`,
       );
-      return result;
+      console.log(result[0]);
+      return result[0];
     } catch (error) {
       this.logger.error(error.message);
       throw new HttpException(

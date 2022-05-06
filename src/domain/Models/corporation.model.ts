@@ -8,10 +8,10 @@ export class Corporation extends Model {
   presenterId: string;
   overtimeRequire: string;
   special: string;
-  startWorkTime: string;
-  endWorkTime: string;
+  startWorkTime: Date | string;
+  endWorkTime: Date | string;
   origin: string;
-  numberEmployees: number;
+  numberEmployees: string;
   slug: string;
   isActive: boolean;
   isRegistered: boolean;

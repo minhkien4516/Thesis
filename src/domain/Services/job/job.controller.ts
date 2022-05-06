@@ -98,8 +98,6 @@ export class JobController {
       const total = await this.jobService.getTotalJobsInCorporationForClient(
         id,
       );
-      console.log(data.length);
-      console.log(Object.values(total)[0]);
       if (Object.values(total)[0] > 0 && data.length > 0) {
         await Promise.all(
           data.map(async (item) => {
@@ -107,6 +105,7 @@ export class JobController {
               item.id,
             );
             item.details = relevant;
+
             const location =
               await this.corporationService.getLocationForCorporation(
                 Object.values(item.details.corporation)[0].id,
@@ -148,6 +147,7 @@ export class JobController {
               item.id,
             );
             item.details = relevant;
+            if (!item.details.corporation) return item.details;
             const location =
               await this.corporationService.getLocationForCorporation(
                 Object.values(item.details.corporation)[0].id,

@@ -6,8 +6,8 @@ export interface CorporationFilter {
   presenterId?: string;
   overtimeRequire?: string;
   special?: string;
-  startWorkTime?: string;
-  endWorkTime?: string;
+  startWorkTime?: Date | string;
+  endWorkTime?: Date | string;
   origin?: string;
   createdAt?: string | Date;
   updatedAt?: string | Date;

@@ -6,7 +6,7 @@ import { Skill } from '../../Models/skill.model';
 import { AddNewSkillDto } from './dtos/addNewSkill.dto';
 import { AddJobSkillDto } from './dtos/addJobSkill.dto';
 import { UpdateSkillDto } from './dtos/updateSkill.dto';
-import slugify from 'slugify';
+import slugify from 'vietnamese-slug';
 @Injectable()
 export class SkillService {
   private readonly logger = new Logger('SkillService');
@@ -69,7 +69,7 @@ export class SkillService {
       const updated = await this.sequelize.query(
         'SP_UpdateSkill @id=:id,@name=:name, @level=:level, @position=:position, @slug=:slug',
         {
-          type: QueryTypes.UPDATE,
+          type: QueryTypes.SELECT,
           replacements: {
             id,
             name: updateSkillDto.name ?? null,
@@ -82,11 +82,8 @@ export class SkillService {
           model: Skill,
         },
       );
-      updated[0].slug = slugify(updated[0].name, {
-        lower: true,
-        trim: true,
-        replacement: '-',
-      });
+      console.log(updated[0]);
+      updated[0].slug = slugify(updated[0].name);
       return updated[0];
     } catch (error) {
       this.logger.error(error.message);
