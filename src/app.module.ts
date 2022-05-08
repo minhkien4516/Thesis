@@ -11,6 +11,7 @@ import { LocationModule } from './domain/Services/location/location.module';
 import { SkillModule } from './domain/Services/skill/skill.module';
 import { SearchModule } from './domain/Services/search/search.module';
 import { SalaryModule } from './domain/Services/salary/salary.module';
+import { ReviewModule } from './domain/Services/review/review.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { SalaryModule } from './domain/Services/salary/salary.module';
     SkillModule,
     SalaryModule,
     SearchModule,
+    ReviewModule,
   ],
   providers: [
     {

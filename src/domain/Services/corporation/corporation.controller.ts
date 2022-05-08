@@ -156,6 +156,32 @@ export class CorporationController {
     }
   }
 
+  @Get('filter')
+  async GetCorporationByName(@Query('name') name: string) {
+    try {
+      const corporation = await this.corporationService.getCorporationByName(
+        name,
+      );
+      console.log(Object.values(corporation)[0]);
+
+      if (Object.values(corporation)[0] == undefined) {
+        return { corporation: [] };
+      } else {
+        const { files } = await this.getImages(
+          Object.values(corporation)[0].id,
+        );
+        Object.values(corporation)[0].images = files;
+        return { corporation };
+      }
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new HttpException(
+        error.message,
+        error?.status || HttpStatus.SERVICE_UNAVAILABLE,
+      );
+    }
+  }
+
   @Patch()
   public async updateCorporation(
     @Query('id') id: string,

@@ -18,11 +18,7 @@ export class CorporationService {
   ): Promise<CorporationFilter[]> {
     try {
       if (!addNewCorporationDto.name) return [];
-      const slug = slugify(addNewCorporationDto.name, {
-        lower: true,
-        trim: true,
-        replacement: '-',
-      });
+      const slug = slugify(addNewCorporationDto.name);
       const inserted: CorporationFilter[] = await this.sequelize.query(
         'SP_AddNewCorporation @name=:name, @hotline=:hotline, @email=:email, @presenterId=:presenterId, @overtimeRequire=:overtimeRequire,' +
           ' @special=:special, @startWorkTime=:startWorkTime, @endWorkTime=:endWorkTime, @origin=:origin, @numberEmployees=:numberEmployees, @slug=:slug',
@@ -126,6 +122,39 @@ export class CorporationService {
           type: QueryTypes.RAW,
           replacements: {
             id,
+          },
+          raw: true,
+        },
+      );
+
+      if (
+        typeof Object.keys(corporation) == null ||
+        typeof Object.keys(corporation) == 'undefined' ||
+        !corporation[0].length
+      )
+        return corporation[0][0];
+      {
+        const info: string = corporation[0]
+          .map((each: string) => {
+            return Object.values(each)[0];
+          })
+          .reduce((acc: string, curr: string) => acc + curr, '');
+        return JSON.parse(info);
+      }
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new DatabaseError(error);
+    }
+  }
+
+  public async getCorporationByName(name: string): Promise<CorporationFilter> {
+    try {
+      const corporation = await this.sequelize.query(
+        'SP_GetCorporationByName @name=:name',
+        {
+          type: QueryTypes.RAW,
+          replacements: {
+            name,
           },
           raw: true,
         },

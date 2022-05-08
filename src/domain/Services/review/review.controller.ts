@@ -20,6 +20,7 @@ import {
   UploadFilesForOwnerResponse,
 } from '../../interfaces';
 import { defaultTimeout } from '../../../constants/timeout.constant';
+import { AddNewReviewsDto } from './dtos/addNewReview.dto';
 
 @Controller('review')
 export class ReviewController {
@@ -29,6 +30,40 @@ export class ReviewController {
     private readonly reviewService: ReviewService,
     private readonly fileService: FilesService,
   ) {}
+
+  @Post()
+  async addNewCorporationReview(
+    @Query('corporationId') corporationId: string,
+    @Body() addNewReviewsDto: AddNewReviewsDto,
+  ) {
+    try {
+      const multiReview = await Promise.all(
+        addNewReviewsDto.review.map(async (item) => {
+          const review = await this.reviewService.addNewReview(item);
+          await this.reviewService.addCorporationReview({
+            reviewId: review.id,
+            corporationId,
+          });
+          if (item.subReview.length < 0) return [];
+          item.subReview.map(async (sub) => {
+            const subReview = await this.reviewService.addNewSubReview(sub);
+            await this.reviewService.addReviewWithSubReview({
+              reviewId: review.id,
+              subReviewId: subReview.id,
+            });
+          });
+          return item;
+        }),
+      );
+      return multiReview;
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new HttpException(
+        error.message,
+        error?.status || HttpStatus.SERVICE_UNAVAILABLE,
+      );
+    }
+  }
 
   public async getImages(id: string): Promise<GetAllForOwnerResponse> {
     try {
