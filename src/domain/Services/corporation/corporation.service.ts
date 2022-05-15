@@ -114,6 +114,33 @@ export class CorporationService {
     }
   }
 
+  public async getReviewForCorporation(id: string) {
+    try {
+      const review = await this.sequelize.query(
+        'SP_GetReviewForCorporationByCorporationId @id=:id',
+        {
+          type: QueryTypes.RAW,
+          replacements: { id },
+          raw: true,
+        },
+      );
+      if (
+        typeof Object.keys(review) == null ||
+        typeof Object.keys(review) == 'undefined' ||
+        !review[0].length
+      )
+        return review[0][0];
+      {
+        const info: string = review[0]
+          .map((each: string) => {
+            return Object.values(each)[0];
+          })
+          .reduce((acc: string, curr: string) => acc + curr, '');
+        return JSON.parse(info);
+      }
+    } catch (error) {}
+  }
+
   public async getCorporationById(id: string): Promise<CorporationFilter> {
     try {
       const corporation = await this.sequelize.query(

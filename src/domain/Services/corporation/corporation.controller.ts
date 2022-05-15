@@ -88,10 +88,17 @@ export class CorporationController {
           data.map(async (item) => {
             const relevant =
               await this.corporationService.getLocationForCorporation(item.id);
+            const subresource =
+              await this.corporationService.getReviewForCorporation(item.id);
             const { files } = await this.getImages(item.id);
             item.images = files;
             item.location = relevant;
-            return { details: item.images, location: item.location };
+            item.review = subresource;
+            return {
+              details: item.images,
+              location: item.location,
+              review: item.review,
+            };
           }),
         );
 

@@ -28,6 +28,25 @@ export interface CorporationFilter {
     createdAt: string;
     updatedAt: string;
   }>;
+  review?: Array<{
+    id: string;
+    comment: string;
+    rating: number;
+    isActive: boolean;
+    isRegistered: boolean;
+    createdAt: string;
+    updatedAt: string;
+    subreview?: Array<{
+      id: string;
+      content: string;
+      reviewId: string;
+      rating: number;
+      isActive: boolean;
+      isRegistered: boolean;
+      createdAt?: string;
+      updatedAt?: string;
+    }>;
+  }>;
   images?: Array<{
     id: string;
     ownerId: string;
