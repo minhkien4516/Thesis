@@ -12,6 +12,7 @@ import { SkillModule } from './domain/Services/skill/skill.module';
 import { SearchModule } from './domain/Services/search/search.module';
 import { SalaryModule } from './domain/Services/salary/salary.module';
 import { ReviewModule } from './domain/Services/review/review.module';
+import { EmployeeModule } from './domain/Services/employee/employee.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ReviewModule } from './domain/Services/review/review.module';
     SalaryModule,
     SearchModule,
     ReviewModule,
+    EmployeeModule,
   ],
   providers: [
     {
