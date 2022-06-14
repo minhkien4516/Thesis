@@ -18,11 +18,11 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(process.env.PORT || 3002);
   (async () => {
     const url = await ngrok.connect({
       proto: 'http',
-      addr: parseInt(process.env.PORT) || 3000,
+      addr: parseInt(process.env.PORT) || 3002,
       authtoken: process.env.NGROK_TOKEN,
       region: 'us',
     });
