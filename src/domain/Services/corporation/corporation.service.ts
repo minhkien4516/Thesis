@@ -285,4 +285,25 @@ export class CorporationService {
       throw new DatabaseError(error);
     }
   }
+
+  async ActivateCorporation(id: string) {
+    try {
+      const updated = await this.sequelize.query(
+        'SP_ActivateCorporation @id=:id',
+        {
+          type: QueryTypes.SELECT,
+          replacements: {
+            id,
+          },
+          raw: true,
+          mapToModel: true,
+          model: Corporation,
+        },
+      );
+      return updated[0];
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new DatabaseError(error);
+    }
+  }
 }

@@ -209,6 +209,20 @@ export class CorporationController {
     }
   }
 
+  @Patch('activate')
+  public async activateCorporation(@Query('id') id: string) {
+    try {
+      const result = await this.corporationService.ActivateCorporation(id);
+      return result;
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new HttpException(
+        error.message,
+        error?.status || HttpStatus.SERVICE_UNAVAILABLE,
+      );
+    }
+  }
+
   public async getImages(id: string): Promise<GetAllForOwnerResponse> {
     try {
       const { files } = await firstValueFrom(
