@@ -88,10 +88,8 @@ export class EmployeeController {
               item.cvId,
             );
             item.cvDetail = temp.data;
-            const relevant = await this.jobService.getAllDataForStudentByJobId(
-              item.jobId,
-            );
-            item.jobDetail = relevant;
+            const job = await this.jobService.getJobById(item.jobId);
+            item.jobDetail = job;
             if (!item.jobDetail.corporation) return item.jobDetail;
             const location =
               await this.corporationService.getLocationForCorporation(
