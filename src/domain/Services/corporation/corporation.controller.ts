@@ -48,7 +48,8 @@ export class CorporationController {
       const result = await this.corporationService.addNewCorporation({
         ...addNewCorporation,
       });
-      await this.uploadImages(Object.values(result)[0].id, files.files);
+      if (result.length > 0)
+        await this.uploadImages(Object.values(result)[0].id, files.files);
       await Promise.all(
         result.map(async (item) => {
           const { files } = await this.getImages(item.id);
@@ -59,7 +60,6 @@ export class CorporationController {
       await this.redis.del(
         GET_CORPORATION + `${addNewCorporation.presenterId}`,
       );
-      console.log(result[0]);
       return result[0];
     } catch (error) {
       this.logger.error(error.message);
