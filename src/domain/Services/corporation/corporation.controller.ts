@@ -262,4 +262,23 @@ export class CorporationController {
     this.logger.error('Error from storage service: ', error.message);
     return { urls: [] };
   }
+
+  @Get('report')
+  public async getCorporationReportForClient(
+    @Query('academicYear') academicYear: string,
+  ) {
+    try {
+      const report =
+        await this.corporationService.getCorporationReportForClient(
+          academicYear,
+        );
+      return { report };
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new HttpException(
+        error.message,
+        error?.status || HttpStatus.SERVICE_UNAVAILABLE,
+      );
+    }
+  }
 }
