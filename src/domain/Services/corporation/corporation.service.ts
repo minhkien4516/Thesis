@@ -316,9 +316,10 @@ export class CorporationService {
           replacements: {
             academicYear,
           },
+          raw: true,
         },
       );
-      return report[0];
+      return report;
     } catch (error) {
       this.logger.error(error.message);
       throw new DatabaseError(error);

@@ -5,6 +5,7 @@ package university;
 service UniversityService {
     rpc GetResumeForClient (ResumeFilterRequest) returns (ResumeFilterResponse);
     rpc GetStudentByIdGrpc (getStudentbyIdForLoginRequest) returns (StudentFilter);
+    rpc GetTeacherByIdGrpc (getTeacherByIdForLoginRequest) returns (TeacherDetail);
 }
 
 message ResumeFilterRequest {
@@ -31,6 +32,41 @@ message Student {
     string status = 12;
     string academicYear = 13;
     string slug = 14;
+    string nameTeacher = 15;
+    string internshipCertification = 16;
+    string internshipReport = 17;
+    string internshipFeedback = 18;
+    string internshipSurvey = 19;
+    string internshipFirstGrade = 20;
+    string internshipSecondGrade = 21;
+    string internshipThirdGrade = 22;
+    string internshipFinalGrade = 23;
+}
+
+message StudentWaitingAccepted {
+    string id = 1;
+    string firstName = 2;
+    string lastName = 3;
+    string fullName = 4;
+    string email = 5;
+    string birthDate = 6;
+    string identityNumber = 7;
+    string address = 8;
+    string phoneNumber = 9;
+    string class = 10;
+    string term = 11;
+    string status = 12;
+    string academicYear = 13;
+    string slug = 14;
+    string nameTeacher = 15;
+    string internshipCertification = 16;
+    string internshipReport = 17;
+    string internshipFeedback = 18;
+    string internshipSurvey = 19;
+    string internshipFirstGrade = 20;
+    string internshipSecondGrade = 21;
+    string internshipThirdGrade = 22;
+    string internshipFinalGrade = 23;
 }
 
 message Contact {
@@ -99,6 +135,16 @@ message getStudentbyIdForLoginRequest{
     string id = 1;
 }
 
+message getTeacherByIdForLoginRequest{
+    string id = 1;
+}
+
+message TeacherDetail {
+    repeated Teacher teacher = 1;
+    repeated Student student = 2;
+    repeated StudentWaitingAccepted studentWaitingAccepted = 3;
+}
+
 message StudentFilter {
     string id = 1;
     string firstName = 2;
@@ -117,7 +163,36 @@ message StudentFilter {
     string slug = 15;
     string internshipCertification = 16;
     string internshipReport = 17;
-    repeated CV cv = 18;
+    string internshipFeedback = 18;
+    string internshipSurvey = 19;
+    string internshipFirstGrade = 20;
+    string internshipSecondGrade = 21;
+    string internshipThirdGrade = 22;
+    string internshipFinalGrade = 23;
+    repeated CV cv = 24;
+    repeated Teacher teacher = 25;
+    repeated Detail detail = 26;
+}
+
+message Detail {
+    optional string studentId=1;
+    optional string teacherId=2;
+    optional string isRegistered=3;
+    optional string isAccepted=4;
+}
+
+message Teacher {
+    string teacherId=1;
+    string lastName=2;
+    string firstName=3;
+    string fullName=4;
+    string email=5;
+    string department=6;
+    string phoneNumber=7;
+    string position=8;
+    int32  studentAmount=9;
+    int32  maximumStudentAmount=10;
+    string slug=11;
 }
 
 message CV {
