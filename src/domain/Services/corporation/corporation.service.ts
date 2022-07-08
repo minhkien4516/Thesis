@@ -325,4 +325,23 @@ export class CorporationService {
       throw new DatabaseError(error);
     }
   }
+
+  public async getTotalCorporationReportForClient(academicYear?: string) {
+    try {
+      const report = await this.sequelize.query(
+        'SP_TotalOfCorporation @academicYear=:academicYear',
+        {
+          type: QueryTypes.SELECT,
+          replacements: {
+            academicYear,
+          },
+          raw: true,
+        },
+      );
+      return report[0];
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new DatabaseError(error);
+    }
+  }
 }

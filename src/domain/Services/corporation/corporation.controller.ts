@@ -272,7 +272,11 @@ export class CorporationController {
         await this.corporationService.getCorporationReportForClient(
           academicYear,
         );
-      return { report };
+      const totalOfCorporation =
+        await this.corporationService.getTotalCorporationReportForClient(
+          academicYear,
+        );
+      return { report, totalCorporation: Object.values(totalOfCorporation)[0] };
     } catch (error) {
       this.logger.error(error.message);
       throw new HttpException(
